@@ -1,2 +1,2 @@
-# expr
+# cev
 Expression evaluator in C language.
