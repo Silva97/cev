@@ -50,6 +50,7 @@ token_t *cev_lexer(char *input)
       input++;
       break;
     case '!':
+    case '^':
       type = TK_OPERATOR;
       text[0] = *input;
       text[1] = '\0';

@@ -68,5 +68,7 @@ void stack_free(cev_stack_t *stack);
 void cev_error(char *line, char *start, char *end, char *message);
 int64_t cev(cev_t *ctx, char *input);
 token_t *cev_lexer(char *input);
+unsigned int op_prec(token_t *tk);
+int cev_parser(cev_t *cev, token_t *tk);
 
 #endif /* _CEV_H */
