@@ -50,10 +50,37 @@ test_t test_stack(void)
   METRIC_TEST_OK("");
 }
 
+test_t test_parser(void)
+{
+  cev_t *cev = calloc(1, sizeof *cev);
+  token_t *tk = cev_lexer("3 + 4 * 2 / ( 1 - 5 ) ^ 2 ^ 3");
+  const token_type_t list[] = {
+    TK_NUMBER, TK_NUMBER, TK_NUMBER, TK_OPERATOR,
+    TK_NUMBER, TK_NUMBER, TK_OPERATOR, TK_NUMBER,
+    TK_NUMBER, TK_OPERATOR, TK_OPERATOR, TK_OPERATOR,
+    TK_OPERATOR
+  };
+
+  cev_parser(cev, tk);
+
+  for (int i = 0; (tk = queue_pop(&cev->queue)); i++) {
+    if (tk->type == TK_NUMBER)
+      printf("%" PRId64 " ", tk->value);
+    else
+      printf("'%s' ", tk->text);
+    
+    METRIC_ASSERT(tk->type == list[i]);
+  }
+  putchar('\n');
+
+  METRIC_TEST_OK("");
+}
+
 int main(void)
 {
   METRIC_TEST(test_queue);
   METRIC_TEST(test_stack);
+  METRIC_TEST(test_parser);
 
   METRIC_TEST_END();
   return metric_count_tests_fail;
