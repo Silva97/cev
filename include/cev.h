@@ -70,5 +70,7 @@ int64_t cev(cev_t *ctx, char *input);
 token_t *cev_lexer(char *input);
 unsigned int op_prec(token_t *tk);
 int cev_parser(cev_t *cev, token_t *tk);
+void op_eval(cev_t *cev, token_t *op);
+int64_t cev_eval(cev_t *cev);
 
 #endif /* _CEV_H */
