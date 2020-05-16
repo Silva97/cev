@@ -28,13 +28,19 @@ typedef struct token {
   int64_t value;
 } token_t;
 
-/** Syntax tree */
-typedef struct ast {
-  struct ast *left;
-  struct ast *right;
+/** Syntax queue */
+typedef struct cev_queue {
+  struct cev_queue *next;
   
   token_t *tk;
-} ast_t;
+} cev_queue_t;
+
+/** Syntax stack */
+typedef struct cev_stack {
+  struct cev_stack *last;
+  
+  token_t *tk;
+} cev_stack_t;
 
 /** Variable's tree */
 typedef struct var {
@@ -43,11 +49,21 @@ typedef struct var {
   int64_t value;
 } var_t;
 
-/** Context to a expression */
+/** Context to an expression */
 typedef struct cev {
   var_t *vartree;
+  cev_stack_t *stack;
+  cev_queue_t *queue;
 } cev_t;
 
+
+void token_free(token_t *tk);
+void queue_insert(cev_queue_t **queue, token_t *tk);
+token_t *queue_pop(cev_queue_t **queue);
+void queue_free(cev_queue_t *queue);
+void stack_push(cev_stack_t **stack, token_t *tk);
+token_t *stack_pop(cev_stack_t **stack);
+void stack_free(cev_stack_t *stack);
 
 void cev_error(char *line, char *start, char *end, char *message);
 int64_t cev(cev_t *ctx, char *input);
