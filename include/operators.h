@@ -3,24 +3,12 @@
 
 #define OPLIST_SIZE  (sizeof op_list / sizeof *op_list)
 
-/** Operators list */
-static const char *op_list[] = {
-  "**", "^"   "*",  "/",
-  "%",  "+",  "-",  "!",
-  "&",  "|",  ">",  "<"
-  ">=", "<=", "==", "&&",
-  "||", "=",  "+=", "-=",
-  "/="
-};
+extern const char *op_list[];
+extern const unsigned int op_preclist[];
+extern int (*const op_funclist[])(cev_t *, token_t *);
 
-/** Operators precedence */
-static const unsigned int op_preclist[] = {
-  50, 50, 49, 49,
-  49, 48, 48, 40,
-  39, 39, 38, 38,
-  38, 38, 38, 37,
-  37, 30, 30, 30,
-  30
-};
+int opindex(token_t *tk);
+int op_pow(cev_t *cev, token_t *op);
+int op_mult(cev_t *cev, token_t *op);
 
 #endif /* _CEV_OPERATORS_H */
