@@ -8,7 +8,7 @@
 const char *op_list[] = {
   "**", "*",  "/",  "%",
   "^",  "+",  "-",  "!",
-  "&",  "|",  ">",  "<"
+  "&",  "|",  ">",  "<",
   ">=", "<=", "==", "&&",
   "||", "=",  "+=", "-=",
   "/="
@@ -29,7 +29,7 @@ int (*const op_funclist[])(cev_t *, token_t *) = {
   op_xor, op_plus, op_minus, op_log_not,
   op_and, op_or, op_gt, op_lt,
   op_ge, op_le, op_equ, op_log_and,
-  op_log_or,
+  op_log_or, op_attr
 };
 
 /** Returns the operand index */
@@ -208,5 +208,15 @@ int op_log_or(OPARGS)
 {
   OPV2_START
   lvalue = getv(cev, v1) || getv(cev, v2);
+  OPV2_END
+}
+
+int op_attr(OPARGS)
+{
+  OPV2_START
+  OPATTR_START
+  
+  var->value = getv(cev, v2);
+  lvalue = var->value;
   OPV2_END
 }

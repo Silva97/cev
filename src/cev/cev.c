@@ -17,14 +17,16 @@ int64_t cev(cev_t *ctx, char *input)
 {
   cev_t *cev;
   int64_t ret;
-
   if (ctx)
     cev = ctx;
   else
     cev = calloc(1, sizeof *cev);
+  
+  if ( !cev->vartree )
+    cev->vartree = calloc(1, sizeof (var_t));
+
 
   token_t *tklist = cev_lexer(input);
-
   if ( !cev_parser(cev, tklist) )
     exit(EXIT_FAILURE);
   
