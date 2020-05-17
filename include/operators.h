@@ -14,8 +14,6 @@
   }
 
 #define OPV2_END \
-  free(v1); \
-  free(v2); \
   v1 = calloc(1, sizeof *v1); \
   v1->type = TK_NUMBER; \
   v1->value = lvalue; \
@@ -41,7 +39,6 @@
   }
 
 #define OPV1_END \
-  free(vv); \
   vv = calloc(1, sizeof *vv); \
   vv->type = TK_NUMBER; \
   vv->value = lvalue; \

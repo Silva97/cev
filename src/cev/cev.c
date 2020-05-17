@@ -27,6 +27,9 @@ int64_t cev(cev_t *ctx, char *input)
 
 
   token_t *tklist = cev_lexer(input);
+  if ( !tklist )
+    return 0;
+
   if ( !cev_parser(cev, tklist) )
     exit(EXIT_FAILURE);
   

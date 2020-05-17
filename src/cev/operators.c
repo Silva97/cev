@@ -57,10 +57,10 @@ int64_t getv(cev_t *cev, token_t *tk)
     exit(EXIT_FAILURE);
   }
 
-  var_t *var = tree_find(cev, hash(tk->text));
+  var_t *var = tree_find(cev->vartree, hash(tk->text));
   if ( !var ) {
     cev_error(tk->line, tk->start, tk->end, "Undefined variable");
-    exit(EXIT_FAILURE);
+    return 0;
   }
 
   return var->value;
