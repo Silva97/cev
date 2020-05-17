@@ -67,8 +67,14 @@ int op_lt(OPARGS);
 int op_ge(OPARGS);
 int op_le(OPARGS);
 int op_equ(OPARGS);
+int op_not_equ(OPARGS);
 int op_log_and(OPARGS);
 int op_log_or(OPARGS);
 int op_attr(OPARGS);
+int op_attr_plus(OPARGS);
+int op_attr_minus(OPARGS);
+int op_attr_div(OPARGS);
+int op_attr_mod(OPARGS);
+int op_attr_mult(OPARGS);
 
 #endif /* _CEV_OPERATORS_H */

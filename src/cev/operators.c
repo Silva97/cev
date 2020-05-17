@@ -9,9 +9,9 @@ const char *op_list[] = {
   "**", "*",  "/",  "%",
   "^",  "+",  "-",  "!",
   "&",  "|",  ">",  "<",
-  ">=", "<=", "==", "&&",
-  "||", "=",  "+=", "-=",
-  "/="
+  ">=", "<=", "==", "!=",
+  "&&", "||", "=",  "+=",
+  "-=", "/=", "%=", "*="
 };
 
 /** Operators precedence */
@@ -19,17 +19,18 @@ const unsigned int op_preclist[] = {
   50, 49, 49, 49,
   48, 47, 47, 40,
   39, 39, 38, 38,
-  38, 38, 38, 37,
-  37, 30, 30, 30,
-  30
+  38, 38, 38, 38,
+  37, 37, 30, 30,
+  30, 30, 30, 30
 };
 
 int (*const op_funclist[])(cev_t *, token_t *) = {
   op_pow, op_mult, op_div, op_mod,
   op_xor, op_plus, op_minus, op_log_not,
   op_and, op_or, op_gt, op_lt,
-  op_ge, op_le, op_equ, op_log_and,
-  op_log_or, op_attr
+  op_ge, op_le, op_equ, op_not_equ,
+  op_log_and, op_log_or, op_attr, op_attr_plus,
+  op_attr_minus, op_attr_div, op_attr_mod, op_attr_mult
 };
 
 /** Returns the operand index */
@@ -197,6 +198,13 @@ int op_equ(OPARGS)
   OPV2_END
 }
 
+int op_not_equ(OPARGS)
+{
+  OPV2_START
+  lvalue = getv(cev, v1) != getv(cev, v2);
+  OPV2_END
+}
+
 int op_log_and(OPARGS)
 {
   OPV2_START
@@ -217,6 +225,56 @@ int op_attr(OPARGS)
   OPATTR_START
   
   var->value = getv(cev, v2);
+  lvalue = var->value;
+  OPV2_END
+}
+
+int op_attr_plus(OPARGS)
+{
+  OPV2_START
+  OPATTR_START
+  
+  var->value += getv(cev, v2);
+  lvalue = var->value;
+  OPV2_END
+}
+
+int op_attr_minus(OPARGS)
+{
+  OPV2_START
+  OPATTR_START
+  
+  var->value -= getv(cev, v2);
+  lvalue = var->value;
+  OPV2_END
+}
+
+int op_attr_div(OPARGS)
+{
+  OPV2_START
+  OPATTR_START
+  
+  var->value /= getv(cev, v2);
+  lvalue = var->value;
+  OPV2_END
+}
+
+int op_attr_mod(OPARGS)
+{
+  OPV2_START
+  OPATTR_START
+  
+  var->value %= getv(cev, v2);
+  lvalue = var->value;
+  OPV2_END
+}
+
+int op_attr_mult(OPARGS)
+{
+  OPV2_START
+  OPATTR_START
+  
+  var->value *= getv(cev, v2);
   lvalue = var->value;
   OPV2_END
 }
