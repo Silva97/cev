@@ -53,15 +53,15 @@ test_t test_stack(void)
 test_t test_parser(void)
 {
   cev_t *cev = calloc(1, sizeof *cev);
-  token_t *tk = cev_lexer("3 + 4 * 2 / ( 1 - 5 ) ^ 2 ^ 3");
+  token_t *tk = cev_lexer("24 ** 4 + (4-95) / ((27-13) ^ 85)");
   const token_type_t list[] = {
-    TK_NUMBER, TK_NUMBER, TK_NUMBER, TK_OPERATOR,
     TK_NUMBER, TK_NUMBER, TK_OPERATOR, TK_NUMBER,
-    TK_NUMBER, TK_OPERATOR, TK_OPERATOR, TK_OPERATOR,
+    TK_NUMBER, TK_OPERATOR, TK_NUMBER, TK_NUMBER,
+    TK_OPERATOR, TK_NUMBER, TK_OPERATOR, TK_OPERATOR,
     TK_OPERATOR
   };
 
-  cev_parser(cev, tk);
+  METRIC_ASSERT( cev_parser(cev, tk) );
 
   for (int i = 0; (tk = queue_pop(&cev->queue)); i++) {
     if (tk->type == TK_NUMBER)
