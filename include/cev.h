@@ -57,6 +57,7 @@ typedef struct cev {
 } cev_t;
 
 
+void cev_free(cev_t *cev);
 void token_free(token_t *tk);
 void queue_insert(cev_queue_t **queue, token_t *tk);
 token_t *queue_pop(cev_queue_t **queue);

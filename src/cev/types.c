@@ -1,6 +1,14 @@
 #include <stdlib.h>
 #include "cev.h"
 
+/** Free an cev_t struct */
+void cev_free(cev_t *cev)
+{
+  tree_free(cev->vartree);
+  stack_free(cev->stack);
+  queue_free(cev->queue);
+}
+
 /** Free an token list */
 void token_free(token_t *tk)
 {
