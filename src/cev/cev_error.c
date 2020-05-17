@@ -33,7 +33,11 @@ void cev_error(char *line, char *start, char *end, char *message)
       fputs(CE, stderr);
   }
 
-  fprintf(stderr, "\n%*c" CC "^", init, ' ');
+  if (init > 0)
+    fprintf(stderr, "\n%*c" CC "^", init, ' ');
+  else
+    fputs(CC "\n^", stderr);
+
   while (size-- > 0) {
     putc('~', stderr);
   }
