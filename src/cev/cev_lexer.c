@@ -29,7 +29,7 @@ token_t *cev_lexer(char *input)
   token_t *last;
 
   do {
-    while ( isblank(*input) )
+    while ( isspace(*input) )
       input++;
     
     if ( ! *input )
