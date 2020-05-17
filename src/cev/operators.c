@@ -28,7 +28,8 @@ int (*const op_funclist[])(cev_t *, token_t *) = {
   op_pow, op_mult, op_div, op_mod,
   op_xor, op_plus, op_minus, op_log_not,
   op_and, op_or, op_gt, op_lt,
-  op_ge, op_le, op_equ, op_log_and
+  op_ge, op_le, op_equ, op_log_and,
+  op_log_or,
 };
 
 /** Returns the operand index */
@@ -42,21 +43,45 @@ int opindex(token_t *tk)
   return -1;
 }
 
+/** Gets the value of a number or variable token */
+int64_t getv(cev_t *cev, token_t *tk)
+{
+  if ( !tk )
+    return 0;
+
+  if (tk->type == TK_NUMBER)
+    return tk->value;
+  
+  if (tk->type != TK_ID) {
+    cev_error(tk->line, tk->start, tk->end, "Unexpected token here");
+    exit(EXIT_FAILURE);
+  }
+
+  var_t *var = tree_find(cev, hash(tk->text));
+  if ( !var ) {
+    cev_error(tk->line, tk->start, tk->end, "Undefined variable");
+    exit(EXIT_FAILURE);
+  }
+
+  return var->value;
+}
+
 int op_pow(OPARGS)
 {
   OPV2_START
+  int64_t value2 = getv(cev, v2) - 1;
 
-  if (v2->value < 0) {
+  if (value2 < 0) {
     cev_error(v2->line, v2->start, v2->end, "Power operator expects a non-negative exponent.");
     return false;
   }
 
   if (v2->value == 0) {
-    v1->value = 1;
+    lvalue = 1;
   } else {
-    v2->value--;
-    for (int i = v1->value; v2->value; v2->value--)
-      v1->value *= i;
+    lvalue = getv(cev, v1);
+    for (int i = lvalue; value2; value2--)
+      lvalue *= i;
   }
 
   OPV2_END
@@ -65,136 +90,123 @@ int op_pow(OPARGS)
 int op_mult(OPARGS)
 {
   OPV2_START
-  v1->value = v1->value * v2->value;
+  lvalue = getv(cev, v1) * getv(cev, v2);
   OPV2_END
 }
 
 int op_div(OPARGS)
 {
   OPV2_START
-  if ( !v2 ) {
+  int64_t value2 = getv(cev, v2);
+  if ( !value2 ) {
     cev_error(v2->line, v2->start, v2->end, "Division by zero");
     return false;
   }
 
-  v1->value = v1->value / v2->value;
+  lvalue = getv(cev, v1) / value2;
   OPV2_END
 }
 
 int op_mod(OPARGS)
 {
   OPV2_START
-  if ( !v2 ) {
+  int64_t value2 = getv(cev, v2);
+  if ( !value2 ) {
     cev_error(v2->line, v2->start, v2->end, "Modulous by zero");
     return false;
   }
 
-  v1->value = v1->value % v2->value;
+  lvalue = getv(cev, v1) % value2;
   OPV2_END
 }
 
 int op_xor(OPARGS)
 {
   OPV2_START
-  v1->value = v1->value ^ v2->value;
+  lvalue = getv(cev, v1) ^ getv(cev, v2);
   OPV2_END
 }
 
 int op_plus(OPARGS)
 {
   OPV2_START
-  v1->value = v1->value + v2->value;
+  lvalue = getv(cev, v1) + getv(cev, v2);
   OPV2_END
 }
 
 int op_minus(OPARGS)
 {
-  token_t *v2 = stack_pop(&cev->stack);
-  token_t *v1 = stack_pop(&cev->stack);
-  if ( !v2 ) {
-    cev_error(op->line, op->start, op->end, "Operator minus expects a operand");
-    return false;
-  }
-
-  if ( v1 && v1->type == TK_NUMBER ) {
-    v1->value = v1->value - v2->value;
-    OPV2_END
-  }
-
-  if (v1 && v1->type == TK_OPERATOR)
-    stack_push(&cev->stack, v1);
-
-  v2->value = -v2->value;
-  stack_push(&cev->stack, v2);
-  return true;
+  OPV2_START
+  lvalue = getv(cev, v1) - getv(cev, v2);
+  OPV2_END
 }
 
 int op_log_not(OPARGS)
 {
   OPV1_START
-  vv->value = !vv->value;
+  lvalue = !getv(cev, vv);
   OPV1_END
 }
 
 int op_and(OPARGS)
 {
   OPV2_START
-  v1->value = v1->value & v2->value;
+  lvalue = getv(cev, v1) & getv(cev, v2);
   OPV2_END
 }
 
 int op_or(OPARGS)
 {
   OPV2_START
-  v1->value = v1->value | v2->value;
+  lvalue = getv(cev, v1) | getv(cev, v2);
   OPV2_END
 }
 
 int op_gt(OPARGS)
 {
   OPV2_START
-  v1->value = v1->value > v2->value;
+  lvalue = getv(cev, v1) > getv(cev, v2);
   OPV2_END
 }
 
 int op_lt(OPARGS)
 {
   OPV2_START
-  v1->value = v1->value < v2->value;
+  lvalue = getv(cev, v1) < getv(cev, v2);
   OPV2_END
 }
 
 int op_ge(OPARGS)
 {
   OPV2_START
-  v1->value = v1->value >= v2->value;
+  lvalue = getv(cev, v1) >= getv(cev, v2);
   OPV2_END
 }
 
 int op_le(OPARGS)
 {
   OPV2_START
-  v1->value = v1->value <= v2->value;
+  lvalue = getv(cev, v1) <= getv(cev, v2);
   OPV2_END
 }
 
 int op_equ(OPARGS)
 {
   OPV2_START
-  v1->value = v1->value == v2->value;
+  lvalue = getv(cev, v1) == getv(cev, v2);
   OPV2_END
 }
 
 int op_log_and(OPARGS)
 {
   OPV2_START
-  v1->value = v1->value && v2->value;
+  lvalue = getv(cev, v1) && getv(cev, v2);
   OPV2_END
 }
 
 int op_log_or(OPARGS)
 {
   OPV2_START
-  v1->value = v1->value || v2->value;
+  lvalue = getv(cev, v1) || getv(cev, v2);
   OPV2_END
 }
