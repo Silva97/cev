@@ -23,7 +23,7 @@ void cev_error(char *line, char *start, char *end, char *message)
 
   fprintf(stderr, CC "Error: " CE "%s\n", message);
 
-  for (; *line; line++) {
+  for (; *line && *line != '\n'; line++) {
     if (line == start)
       fputs(CC, stderr);
     
