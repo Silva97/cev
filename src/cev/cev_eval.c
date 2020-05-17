@@ -34,5 +34,5 @@ int64_t cev_eval(cev_t *cev)
     op_eval(cev, tk);
   }
 
-  return stack_pop(&cev->stack)->value;
+  return getv( cev, stack_pop(&cev->stack) );
 }
