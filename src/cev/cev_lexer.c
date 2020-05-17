@@ -49,29 +49,48 @@ token_t *cev_lexer(char *input)
       strcpy(text, ")");
       input++;
       break;
-    case '!':
     case '^':
       type = TK_OPERATOR;
       text[0] = *input;
       text[1] = '\0';
       input++;
       break;
+    case '*':
+      type = TK_OPERATOR;
+      if (input[1] == '*') {
+        strcpy(text, "**");
+        input += 2;
+        break;
+      }
+
+      if (input[1] == '=') {
+        strcpy(text, "*=");
+        input += 2;
+        break;
+      }
+
+      strcpy(text, "*");
+      input++;
+      break;
     case '+':
     case '-':
     case '&':
     case '|':
-    case '*':
       if (input[1] == *input) {
+        type = TK_OPERATOR;
+        text[0] = *input;
         text[1] = *input;
         text[2] = '\0';
-        input++;
-      } else {
-        text[1] = '\0';
+        input += 2;
+        break;
       }
+
+      text[1] = '\0';
     case '/':
     case '%':
     case '<':
     case '>':
+    case '!':
     case '=':
       type = TK_OPERATOR;
       text[0] = *input;
