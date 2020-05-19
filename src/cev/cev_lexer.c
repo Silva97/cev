@@ -34,6 +34,13 @@ token_t *cev_lexer(char *input)
     
     if ( ! *input )
       break;
+    
+    if (*input == '#') {
+      while (*input && *input != '\n')
+        input++;
+      
+      continue;
+    }
 
     value = 0;
     start = input;
