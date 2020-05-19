@@ -23,6 +23,13 @@ Simplest example usage:
 int64_t result = cev(NULL, "234 + 0xffffffffff / (0732 ** 3)");
 ```
 
+To use in your project, import `cev.h` and `tree.h` to your include file. Use the command below to compile a static library:
+```
+$ make lib
+```
+
+The file `libcev.a` will be created. Just include `cev.h`, link this static library and done!
+
 # Command-line tool
 This project have an [bc]-like command-line calculator that can run scripts or evaluate expressions
 direct from input.
