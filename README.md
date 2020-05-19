@@ -23,7 +23,7 @@ Simplest example usage:
 int64_t result = cev(NULL, "234 + 0xffffffffff / (0732 ** 3)");
 ```
 
-To use in your project, import `cev.h` and `tree.h` to your include file. Use the command below to compile a static library:
+To use in your project, import `cev.h` and `tree.h` to your include's directory. Use the command below to compile a static library:
 ```
 $ make lib
 ```
