@@ -78,9 +78,9 @@ void show_help(void)
     "Developed by Luiz Felipe <felipe.silva337@yahoo.com>\n"
     "  GitHub: https://github.com/Silva97/cev\n\n"
 
-    "cev is a expression evaluator developed in C language. You can"
-    "evaluate mathetical expressions with C-like operators and define"
-    "variables to use in the expressions."
+    "cev is a expression evaluator developed in C language. You can\n"
+    "evaluate mathetical expressions with C-like operators and define\n"
+    "variables to use in the expressions.\n\n"
 
     "Usage: cev [options] [expr1 expr2 ...]\n"
     "  -h         Show this help message\n"
@@ -92,14 +92,19 @@ void show_help(void)
     "    ./cev x=42\n"
     "  Any positional argument can be any valid expression.\n\n"
 
-    "EXPRESSIONS\n"
-    "  Expressions uses the same operators in C language, including attribution operators.\n"
-    "  The variables is int64_t types with 64-bit size and signal. To set a variable, just\n"
-    "  Use attribution operators of the C language, like in:\n"
-    "    (cev) x = 42\n\n"
+    "  The 'out' variable is the base used to print the output. You can set this\n"
+    "  variable to 8 (octal), 10 (decimal) or 16 (hexadecimal).\n\n"
 
-    "  Expressions can be read from a input file (like a script) using -f option, in this\n"
-    "  case each line of the file is evaluated like an expression. The latest expression\n"
-    "  result is printed in the output."
+    "EXPRESSIONS\n"
+    "  Expressions uses the same operators in C language, including\n"
+    "  attribution operators.\n"
+    "  The variables is int64_t types with 64-bit size and signal. To\n"
+    "  set a variable, just use attribution operators of the C language.\n"
+    "  Example:\n"
+    "    (cev) x = 42 + 0x2a + 052\n\n"
+
+    "  Expressions can be read from a input file (like a script) using\n"
+    "  -f option, in this case each line of the file is evaluated like an\n"
+    "  expression. The latest expression result is printed in the output."
   );
 }
