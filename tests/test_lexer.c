@@ -11,7 +11,7 @@ test_t test_lexer(void)
     TK_ID, TK_OPERATOR, TK_ID
   };
 
-  token_t *tk = cev_lexer(" 23++(0x1a += 42)%=bbb   == ccc  ");
+  token_t *tk = cev_lexer(" 23+(0x1a += 42)%=bbb   == ccc  ");
   if ( !tk )
     METRIC_TEST_FAIL("Lexer error");
 
