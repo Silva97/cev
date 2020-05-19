@@ -28,6 +28,9 @@ debug: release
 release: starting $(OBJ) main.o
 	$(CC) $(CFLAGS) $(OBJ) $(OBJDIR)/main.o -o $(BIN)
 
+lib: starting $(OBJ)
+	ar r libcev.a $(OBJ)
+
 starting:
 	mkdir -p obj/cev
 
