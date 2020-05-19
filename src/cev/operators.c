@@ -75,7 +75,7 @@ int op_pow(OPARGS)
   OPV2_START
   int64_t value2 = getv(cev, v2) - 1;
 
-  if (value2 < 0) {
+  if (v2->value < 0) {
     cev_error(v2->line, v2->start, v2->end, "Power operator expects a non-negative exponent.");
     return false;
   }

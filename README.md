@@ -16,7 +16,7 @@ The functions `cev()` and `cev_script()` (inside [cev.c] file) is the main of th
 | `=`  | `+=` | `-=` | `/=` |
 | `%=` | `*=` | `**` |      |
 
-> The `**` is the same as in the JavaScript, calculating the power of the operators.
+> The `**` is the same as in the JavaScript, calculating the power of the operands.
 
 Simplest example usage:
 ```c
