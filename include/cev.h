@@ -7,6 +7,14 @@
 
 #define TKMAX 33
 
+#ifdef _WIN32
+# define CC ""
+# define CE ""
+#else
+# define CC "\x1b[91m"
+# define CE "\x1b[0m"
+#endif
+
 
 typedef enum token_type {
   TK_ID,
@@ -68,6 +76,7 @@ void stack_free(cev_stack_t *stack);
 
 void cev_error(char *line, char *start, char *end, char *message);
 int64_t cev(cev_t *ctx, char *input);
+int64_t cev_script(cev_t *ctx, char *filename);
 token_t *cev_lexer(char *input);
 unsigned int op_prec(token_t *tk);
 int cev_parser(cev_t *cev, token_t *tk);

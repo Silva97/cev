@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
@@ -5,7 +6,7 @@
 #include "cev.h"
 
 /**
- * @brief Evaluate a expression using a context
+ * @brief Evaluate an expression using a context
  * 
  * The context has the variables' values.
  * 
@@ -39,4 +40,45 @@ int64_t cev(cev_t *ctx, char *input)
   
   token_free(tklist);
   return ret;
+}
+
+/**
+ * @brief Evaluate an script with expressions.
+ * 
+ * @param ctx       If NULL, don't use a context.
+ * @param input     The file to read the expressions.
+ * @return int64_t  The latest expression result.
+ */
+int64_t cev_script(cev_t *ctx, char *filename)
+{
+  char line[513];
+  cev_t *cev_ctx;
+  int64_t last = 0;
+
+  if (ctx)
+    cev_ctx = ctx;
+  else
+    cev_ctx = calloc(1, sizeof *cev_ctx);
+
+  FILE *input = fopen(filename, "r");
+  
+  if ( !input ) {
+    fprintf(stderr, CC "Error: " CE "File '%s' not found\n", filename);
+    exit(EXIT_FAILURE);
+  }
+
+  while ( fgets(line, sizeof line - 1, input) ) {
+    if (line[0] == '\n')
+      continue;
+    if ( !strcmp(line, "quit\n") )
+      break;
+
+    last = cev(cev_ctx, line);
+  }
+
+  fclose(input);
+  if ( !ctx )
+    cev_free(cev_ctx);
+
+  return last;
 }

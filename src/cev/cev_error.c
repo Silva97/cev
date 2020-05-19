@@ -1,12 +1,5 @@
 #include <stdio.h>
-
-#ifdef _WIN32
-# define CC ""
-# define CE ""
-#else
-# define CC "\x1b[91m"
-# define CE "\x1b[0m"
-#endif
+#include "cev.h"
 
 /**
  * @brief Prints a error message
