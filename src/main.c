@@ -47,6 +47,7 @@ int main(int argc, char **argv)
       break;
 
     show_cev(ctx, cev(ctx, line));
+    fputs("(cev) ", stdout);
   }
 
   return EXIT_SUCCESS;
@@ -104,7 +105,7 @@ void show_help(void)
     "    (cev) x = 42 + 0x2a + 052\n\n"
 
     "  Expressions can be read from a input file (like a script) using\n"
-    "  -f option, in this case each line of the file is evaluated like an\n"
+    "  -s option, in this case each line of the file is evaluated like an\n"
     "  expression. The latest expression result is printed in the output."
   );
 }

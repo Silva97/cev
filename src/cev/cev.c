@@ -52,6 +52,7 @@ int64_t cev(cev_t *ctx, char *input)
 int64_t cev_script(cev_t *ctx, char *filename)
 {
   char line[513];
+  FILE *input;
   cev_t *cev_ctx;
   int64_t last = 0;
 
@@ -60,7 +61,10 @@ int64_t cev_script(cev_t *ctx, char *filename)
   else
     cev_ctx = calloc(1, sizeof *cev_ctx);
 
-  FILE *input = fopen(filename, "r");
+  if ( !strcmp(filename, "-") )
+    input = stdin;
+  else
+    input = fopen(filename, "r");
   
   if ( !input ) {
     fprintf(stderr, CC "Error: " CE "File '%s' not found\n", filename);
