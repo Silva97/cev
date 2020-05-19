@@ -30,6 +30,19 @@ $ make lib
 
 The file `libcev.a` will be created. Just include `cev.h`, link this static library and done!
 
+## Functions
+```c
+int64_t cev(cev_t *ctx, char *input)
+```
+Evaluates `input` string like an expression. The `ctx` struct is an context that have the declared variables. If passed `NULL` like argument, this don't use a pre-defined context.  
+This function returns the result of the expression as `int64_t` integer.
+
+```c
+int64_t cev_script(cev_t *ctx, char *filename)
+```
+Evaluates all lines of the file like expressions. The `ctx` is the same as `cev()` function.  
+Returns the latest expression result as `int64_t` integer.
+
 # Command-line tool
 This project have an [bc]-like command-line calculator that can run scripts or evaluate expressions
 direct from input.
