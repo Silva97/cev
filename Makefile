@@ -31,6 +31,9 @@ release: starting $(OBJ) main.o
 starting:
 	mkdir -p obj/cev
 
+doc:
+	doxygen
+
 clean:
 	rm -rf obj/
 
